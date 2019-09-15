@@ -9,7 +9,7 @@
   (and value (not (eql value :unspecific))))
 
 
-;;; if filename not exit and type not exit
+;;; if filename not exist and type not exist
 ;;; and filename not nil,return filename 
 (defun directory-path-p(p)
   (and
@@ -32,6 +32,7 @@
 	:defaults pathname)
       pathname)))
 
+;;; if dirname is "/home/caesar", return directory #P"/home/caesar/*.*"
 (defun directory-wildcard (dirname)
   (make-pathname
     :name :wild
@@ -67,4 +68,16 @@
 
     #-(or sbcl lispworks openmcl allegro clisp)
     (error "list-directory not implemented")))
+
+(defun file-exists-p(p)
+  #+(or sbcl lispworks openmcl)
+  (probe-file p)
+
+  #+(or allegro cmu)
+  (or (probe-file (pathname-as-directory p))
+      (probe-file p)))
+
+; test file-exists-p
+;(defvar path (pathname "C:\\Users\\caesar"))
+;(print (file-exists-p path))
 
