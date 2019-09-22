@@ -1,3 +1,13 @@
+;write file with-open-file
+(defun write_file(str file)
+  (with-open-file (out file
+		       :direction :output
+		       :if-exists :append
+		       :if-does-not-exist :create
+		       )
+    (write-string str out)))
+
+
 
 ; read file with open
 (defun read_whole_file(filename)
@@ -15,4 +25,5 @@
       (loop for line = (read-line in nil)
 	    while line do (print line)))))
 
+(write_file (format nil "hello world~%")  "text.txt")
 (read_file "text.txt")
